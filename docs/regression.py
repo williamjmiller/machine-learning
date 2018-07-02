@@ -35,7 +35,7 @@ df.fillna(-99999, inplace=True)
 
 # trying to predict out 10% of the dataframe
 # using data from 10 days ago to predict 10 days out
-forecast_out = int(math.ceil(0.01*len(df)))
+forecast_out = int(math.ceil(0.1*len(df)))
 
 # shifting columsn in a negative manner so that each label column of each row
 # will be the adjusted row price 10 days into the future
@@ -46,8 +46,8 @@ df['label'] = df[forecast_col].shift(-forecast_out)
 
 X = np.array(df.drop(['label'], 1)) # returns new dataframe
 X = preprocessing.scale(X) # scale from -1 to 1, would be skipped in high frequency trading
-X = X[:-forecast_out]
 X_lately = X[-forecast_out:] # stuff we are going to predict against
+X = X[:-forecast_out]
 
 df.dropna(inplace=True)
 y = np.array(df['label'])
